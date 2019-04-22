@@ -15,7 +15,7 @@ class WCV_Vendors {
 	 */
 	function __construct() {
 
-		add_action( 'woocommerce_checkout_order_processed', array( __CLASS__, 'create_child_orders' ), 10, 1 );
+//		add_action( 'woocommerce_checkout_order_processed', array( __CLASS__, 'create_child_orders' ), 10, 1 );
 		add_filter( 'init', array( $this, 'add_rewrite_rules' ), 0 );
 	}
 
@@ -590,7 +590,7 @@ class WCV_Vendors {
 	 *
 	 * @param array $args
 	 *
-	 * @return WC_Order_Vendor|WP_Error
+	 * @return WCVendors_Vendor_Order|WP_Error
 	 */
 	public static function create_vendor_order( $args = array() ) {
 
@@ -708,7 +708,7 @@ class WCV_Vendors {
 		// Clear transients
 		wc_delete_shop_order_transients( $args['order_id'] );
 
-		return new WC_Order_Vendor( $vendor_order_id );
+		return new WCVendors_Vendor_Order( $vendor_order_id );
 	}
 
 
@@ -731,7 +731,7 @@ class WCV_Vendors {
 		);
 
 		foreach ( $vendor_order_ids as $vendor_order_id ) {
-			$vendor_orders[] = new WC_Order_Vendor( $vendor_order_id );
+			$vendor_orders[] = new WCVendors_Vendor_Order( $vendor_order_id );
 		}
 
 		return $vendor_orders;

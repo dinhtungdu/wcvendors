@@ -7,7 +7,7 @@
  * Author URI:           https://www.wcvendors.com
  * GitHub Plugin URI:    https://github.com/wcvendors/wcvendors
  *
- * Version:              2.1.7
+ * Version:              2.2.0
  * Requires at least:    4.4.0
  * Tested up to:         5.1
  * WC requires at least: 3.3.0
@@ -142,6 +142,9 @@ if ( wcv_is_woocommerce_activated() ) {
 			// Add become a vendor rewrite endpoint
 			add_action( 'init'              , array( $this, 'add_rewrite_endpoint' ) );
 			add_action( 'after_switch_theme', array( $this, 'flush_rewrite_rules' ) );
+
+			// Register data store.
+			add_filter( 'woocommerce_data_stores', array( $this, 'add_data_stores' ) );
 		}
 
 		/**
@@ -219,12 +222,14 @@ if ( wcv_is_woocommerce_activated() ) {
 			include_once wcv_plugin_dir . 'classes/class-vendors.php';
 			include_once wcv_plugin_dir . 'classes/class-cron.php';
 			include_once wcv_plugin_dir . 'classes/class-commission.php';
+			include_once wcv_plugin_dir . 'classes/class-order.php';
 			include_once wcv_plugin_dir . 'classes/class-shipping.php';
 			include_once wcv_plugin_dir . 'classes/class-vendor-order.php';
 			include_once wcv_plugin_dir . 'classes/class-vendor-post-types.php';
 			include_once wcv_plugin_dir . 'classes/includes/wcv-template-functions.php';
 			include_once wcv_plugin_dir . 'classes/includes/wcv-update-functions.php';
 			include_once wcv_plugin_dir . 'classes/admin/emails/class-emails.php';
+			include_once wcv_plugin_dir . 'classes/data-stores/class-wcv-vendor-order-data-store.php';
 
 			if ( is_admin() ) {
 
@@ -272,6 +277,7 @@ if ( wcv_is_woocommerce_activated() ) {
 
 			new WCV_Shipping();
 			new WCV_Cron();
+			new WCV_Order();
 			new WCV_Commission();
 			new WCV_Vendors();
 			new WCV_Emails();
@@ -423,6 +429,16 @@ if ( wcv_is_woocommerce_activated() ) {
 				}
 			}
 		} // show_upgrade_notification()
+
+		/**
+		 * Register data stores for WooCommerce 3.0+
+		 *
+		 * @since 1.0.0
+		 */
+		public static function add_data_stores( $data_stores ) {
+			$data_stores['shop-order-vendor'] = 'WCVendors_Vendor_Order_Data_Store_CPT';
+			return $data_stores;
+		}
 
 	}
 

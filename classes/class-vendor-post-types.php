@@ -77,7 +77,7 @@ class WCV_Post_types {
 					'exclude_from_order_views'         => true,
 					'exclude_from_order_reports'       => true,
 					'exclude_from_order_sales_reports' => true,
-					'class_name'                       => 'WC_Order_Vendor',
+					'class_name'                       => 'WCVendors_Vendor_Order',
 				)
 			)
 		);
